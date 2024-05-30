@@ -3,34 +3,42 @@
 #include <vector>
 using namespace std;
 
-void solve(string map[],string input,int index_of_input,vector <string>& answer,string output){
 
-// Base case 
-if(index_of_input==input.length()){
-    answer.push_back(output);
-    return;
-}
-    
-int digit = input[index_of_input] - '0';
-string value = map[digit-2];
-for(int i=0; i<value.length();i++){
-    output.push_back(value[i]);
-    solve(map,input,index_of_input+1,answer,output);
-    output.pop_back(); // Back Tracking to make the string empty
-}
-
+void solve(string* map,int* ip,vector<string> &arr,string ans,int i,int j){
+	//Base case
+	if(i==3){
+		arr.push_back(ans);
+		return;
+	}
+	string retrive = map[ip[i]];
+	for(int j=0;j<retrive.length();j++){
+		ans.push_back(retrive[j]);
+		solve(map,ip,arr,ans,i+1,j);
+		ans.pop_back();
+	}
+	
 }
 
-int main() {
-    string map[8]={"abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
-    string input;
-    cin>>input;
-    int index_of_input = 0;
-    vector <string> answer;
-    string output;
-    solve(map,input,index_of_input,answer,output);
-    for(int i=0;i<answer.size();i++){
-        cout<<answer[i]<<" ";
-    }   
-    return 0;
+
+main(){
+	string map[10] = {"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+	int ip[3] = {2,3,4};
+	vector<string> arr;
+	string ans = "";
+	solve(map,ip,arr,ans,0,0);
+	for(int i=0;i<arr.size();i++){
+		cout<<arr[i]<<" ";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

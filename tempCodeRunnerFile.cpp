@@ -1,1 +1,10 @@
-data
+    // Doubly_LL d1;
+    // d1.add_to_tail(1);
+    // d1.add_to_tail(5);
+    // d1.add_to_tail(10);
+    // d1.add_to_tail(15);
+    // d1.add_to_tail(-9);
+    // d1.add_to_tail(2);
+    // d1.traverse();
+    // d1.bubble_sort_on_LL();
+    // d1.traverse();

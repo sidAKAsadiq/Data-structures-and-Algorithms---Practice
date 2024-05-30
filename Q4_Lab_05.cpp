@@ -1,5 +1,4 @@
 #include <iostream>
-#include<vector>
 
 using namespace std;
 
@@ -309,36 +308,183 @@ class singly_linked_list{
             access_ahead = head->next;
         }
     }
-    //This function refers to Home task 6 of lab manual 4
-     void append_alternare_reversed_nodes_to_tail(){
-        int counter_limit = count_number_of_nodes()/2;
-        int counter = 1;
+        void sorting_subsequent_nodes(){
+            Node* access_ahead = head->next;
+            Node* access_previous = head;
+
+
+    }
+    void reverse(){
+        Node* previous = head;
+        Node* ahead  = head->next;
         Node* temp = head->next;
-        int store_index = 2;
-        int store_value = temp->data;
-        temp = temp->next->next;
-        delete_by_index(store_index);
-        add_to_start_of_LL(store_value);
-        while(counter != counter_limit){
-            store_index = store_index + 2;
-            store_value = temp->data;
-            if(temp->next != NULL && temp->next->next != NULL){
-                temp = temp->next->next;
+        previous->next = NULL;
+        temp = temp->next;
+        ahead->next = previous;
+        previous = ahead;
+        ahead = temp;
+        while(ahead!=NULL){
+        temp = temp->next;
+        ahead->next = previous;
+        previous = ahead;
+        ahead = temp;            
+        }
+        head = previous;
+
+    }
+
+    void reverse_between_2_index(int start_index , int last_index){
+        if(start_index == 1 && last_index == count_number_of_nodes()){
+            reverse();
+            return;
+        }
+        Node* previous_of_start;
+        Node* next_of_last;
+        Node* start;
+        Node* last;
+
+        Node* traverse = head;
+        int counter  = 1;
+        while(counter != last_index){
+            if(counter == start_index-1 ){
+                previous_of_start = traverse;
+                start = previous_of_start->next;
             }
-            delete_by_index(store_index);
-            add_to_start_of_LL(store_value);
+            traverse = traverse->next;
             counter++;
         }
-        counter = 0;
-        temp = head;
-        while(counter != counter_limit){
-            add_to_end_of_LL(temp->data);
-            delete_by_value(temp->data);
-            temp = temp->next;
-            counter++;
-        }       
-        
-     }
+        last = traverse;
+        next_of_last = last->next;
+
+        Node* ahead = start->next;
+        Node* previous = start;
+        Node* temp = ahead;
+        previous->next = next_of_last;
+        temp = temp->next;
+        ahead->next = previous;
+        previous = ahead;
+        ahead = temp;
+
+        while (previous!=last) {
+        temp = temp->next;
+        ahead->next = previous;
+        previous = ahead;
+        ahead = temp;            
+        }
+
+        previous_of_start->next = previous;
+    }
+
+
+    void bubble_sort(){
+        Node* previous_of_previous = NULL;
+        Node* previous = head;
+        Node* ahead = head->next;
+        // if(previous->data > ahead->data){
+        //     previous->next = ahead->next;
+        //     ahead->next = previous;
+        //     head = ahead;
+        //     previous = ahead;
+        //     ahead = ahead->next;
+        // }
+        //     previous = ahead;
+        //     ahead = ahead->next;
+        //     previous_of_previous = head;
+            int count = 0;
+            while (count != count_number_of_nodes()){
+                while(ahead != NULL){
+                    if(previous->data > ahead->data){
+                        if(previous_of_previous == NULL){
+                        previous->next = ahead->next;
+                        ahead->next = previous;
+                        head = ahead;
+                        previous = ahead;
+                        ahead = ahead->next;
+                        previous = ahead;
+                        ahead = ahead->next;
+                        previous_of_previous = head;                        
+                        }
+                        else{
+                        previous->next = ahead->next;
+                        ahead->next = previous;
+                        previous_of_previous->next = ahead;
+                        ahead = previous->next;
+                        previous_of_previous = previous_of_previous->next;  
+                        }                      
+                    }
+                    else{
+                        if(previous_of_previous == NULL){
+                            previous_of_previous = head;
+                            previous = ahead;
+                            ahead = ahead->next;
+                        }
+                        else{
+                            previous_of_previous = previous;
+                            previous = ahead;
+                            ahead = ahead->next;
+                        }
+                    }
+                }
+                    count++;
+                    previous_of_previous = NULL;
+                    previous = head;
+                    ahead = head->next;
+            }
+
+
+    }
+
+    void bubble_sort_by_recursion(int n){
+        //Base case
+        if(n==0){
+            return;
+        }
+        Node* ahead = head->next; 
+        Node* previous = head;
+        Node* previous_of_previous = NULL;
+        for(int i = 0; i<n ; i++){
+                while(ahead != NULL){
+                    if(previous->data > ahead->data){
+                        if(previous_of_previous == NULL){
+                        previous->next = ahead->next;
+                        ahead->next = previous;
+                        head = ahead;
+                        previous = ahead;
+                        ahead = ahead->next;
+                        previous = ahead;
+                        ahead = ahead->next;
+                        previous_of_previous = head;                        
+                        }
+                        else{
+                        previous->next = ahead->next;
+                        ahead->next = previous;
+                        previous_of_previous->next = ahead;
+                        ahead = previous->next;
+                        previous_of_previous = previous_of_previous->next;  
+                        }                      
+                    }
+                    else{
+                        if(previous_of_previous == NULL){
+                            previous_of_previous = head;
+                            previous = ahead;
+                            ahead = ahead->next;
+                        }
+                        else{
+                            previous_of_previous = previous;
+                            previous = ahead;
+                            ahead = ahead->next;
+                        }
+                    }
+                }
+        }
+
+        bubble_sort_by_recursion(n-1);
+
+    }
+
+
+
+
 
 
     
@@ -362,13 +508,6 @@ class singly_linked_list{
         }
         return counter;
     }
-    void update_tail(){
-        Node* temp = head;
-        while(temp->next != NULL){
-            temp = temp->next;
-        }
-        tail =temp;
-    }
     ~singly_linked_list(){
         delete head;
         head = NULL;
@@ -376,75 +515,14 @@ class singly_linked_list{
         tail = NULL;
     }
 };
-    void merge_2_LL(singly_linked_list l1, singly_linked_list l2){
-        Node* temp_1 = l1.head;
-        cout<<"l1 head:"<<l1.head->data;
-        Node* prev_1 = NULL;
-        Node* temp_2 = l2.head;
-        cout<<"l2.head: "<<l2.head->data<<endl;
-        Node* next_2 = l2.head->next;
-
-        while(temp_1 != NULL && next_2 != NULL){
-            if(temp_2->data < temp_1->data){
-                cout<<"Temp1 :"<<temp_1->data<<endl;
-                cout<<"TEmp2 :"<<temp_2->data<<endl;
-                cout<<"Next2 :"<<next_2->data<<endl;
-               if(!prev_1==NULL) cout<<"prev:"<<prev_1->data<<endl;
-                if(temp_1 == l1.head){
-                    temp_2->next = temp_1;
-                    l1.head = temp_2;
-                    prev_1 = l1.head;
-                    l2.head = next_2;
-                    temp_2 = next_2;
-                    next_2 = next_2->next;
-                }
-                else{
-                    prev_1->next = temp_2;
-                    temp_2->next = temp_1;
-                    prev_1 = temp_2;
-                    l2.head = next_2;
-                    temp_2 = next_2;
-                    next_2 = next_2->next;
-                }
-                l1.traverse_LL();
-            }
-            else{
-                prev_1 = temp_1;
-                temp_1 = temp_1->next;
-            }
-        }
-        cout<<"Previous : "<<prev_1->data;
-        cout<<"L2 ka head"<<l2.head->data;
-        cout<<"\nL1 ka head"<<l1.head->data;
-
-
-        if(temp_1 == NULL){
-            cout<<"hi";
-            prev_1->next = l2.head;
-            l1.traverse_LL();
-        }
-        cout<<"\nl1 ka head :"<<l1.head->data;
-        
-
-    }
 main(){
-    singly_linked_list l2;
-    l2.add_to_end_of_LL(-1);
-    l2.add_to_end_of_LL(0);
-    l2.add_to_end_of_LL(2);
-    l2.add_to_end_of_LL(25);
-    l2.add_to_end_of_LL(35);
-    l2.add_to_end_of_LL(40);
-    l2.traverse_LL();
-    singly_linked_list l1;
-    l1.add_to_end_of_LL(1);
-    l1.add_to_end_of_LL(20);
-    l1.add_to_end_of_LL(31);
-    l1.traverse_LL();
-    merge_2_LL(l1,l2);
-    //cout<<l1.head->data;
-    //cout<<l2.head->data;
-    cout<<"pgl\n";
-    l1.traverse_LL();
-
+    singly_linked_list s1;
+    s1.add_to_end_of_LL(5);
+    s1.add_to_end_of_LL(4);
+    s1.add_to_end_of_LL(3);
+    s1.add_to_end_of_LL(2);
+    s1.add_to_end_of_LL(1);
+    s1.traverse_LL();
+    s1.bubble_sort_by_recursion(s1.count_number_of_nodes());
+    s1.traverse_LL();
     }

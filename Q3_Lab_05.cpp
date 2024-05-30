@@ -1,5 +1,4 @@
 #include <iostream>
-#include<vector>
 
 using namespace std;
 
@@ -268,6 +267,17 @@ class singly_linked_list{
                     if(access_previous == head){
                     head = access_ahead;
                     }
+                        access_ahead->next = access_previous;
+                        access_previous->next = store;
+                        access_previous_previous = access_ahead;
+                        access_ahead = access_previous->next;                    
+                }
+                else{
+                    if(access_previous != head){
+                        access_previous_previous = access_previous;                        
+                    }
+                        access_previous = access_ahead;
+                        access_ahead = access_previous->next;
                 }
 
                 if(access_previous == head){
@@ -309,38 +319,32 @@ class singly_linked_list{
             access_ahead = head->next;
         }
     }
-    //This function refers to Home task 6 of lab manual 4
-     void append_alternare_reversed_nodes_to_tail(){
-        int counter_limit = count_number_of_nodes()/2;
-        int counter = 1;
-        Node* temp = head->next;
-        int store_index = 2;
-        int store_value = temp->data;
-        temp = temp->next->next;
-        delete_by_index(store_index);
-        add_to_start_of_LL(store_value);
-        while(counter != counter_limit){
-            store_index = store_index + 2;
-            store_value = temp->data;
-            if(temp->next != NULL && temp->next->next != NULL){
-                temp = temp->next->next;
-            }
-            delete_by_index(store_index);
-            add_to_start_of_LL(store_value);
-            counter++;
+        void sorting_subsequent_nodes(){
+            Node* access_ahead = head->next;
+            Node* access_previous = head;
+
+
+    }
+
+    void print_in_reverse_by_RECURSION(Node* traverse){
+        if(traverse == NULL){
+            return;
         }
-        counter = 0;
-        temp = head;
-        while(counter != counter_limit){
-            add_to_end_of_LL(temp->data);
-            delete_by_value(temp->data);
-            temp = temp->next;
-            counter++;
-        }       
         
-     }
+        print_in_reverse_by_RECURSION(traverse->next);
+        cout<<traverse->data<<" ";
+
+    }
+    void print_in_order_by_RECURSION(Node* traverse){
+        if(traverse == NULL){
+            return;
+        }
+        
+        cout<<traverse->data<<" ";
+        print_in_order_by_RECURSION(traverse->next);
 
 
+    }    
     
 //  Extra function for my own help
     void traverse_LL(){
@@ -362,13 +366,6 @@ class singly_linked_list{
         }
         return counter;
     }
-    void update_tail(){
-        Node* temp = head;
-        while(temp->next != NULL){
-            temp = temp->next;
-        }
-        tail =temp;
-    }
     ~singly_linked_list(){
         delete head;
         head = NULL;
@@ -376,75 +373,18 @@ class singly_linked_list{
         tail = NULL;
     }
 };
-    void merge_2_LL(singly_linked_list l1, singly_linked_list l2){
-        Node* temp_1 = l1.head;
-        cout<<"l1 head:"<<l1.head->data;
-        Node* prev_1 = NULL;
-        Node* temp_2 = l2.head;
-        cout<<"l2.head: "<<l2.head->data<<endl;
-        Node* next_2 = l2.head->next;
-
-        while(temp_1 != NULL && next_2 != NULL){
-            if(temp_2->data < temp_1->data){
-                cout<<"Temp1 :"<<temp_1->data<<endl;
-                cout<<"TEmp2 :"<<temp_2->data<<endl;
-                cout<<"Next2 :"<<next_2->data<<endl;
-               if(!prev_1==NULL) cout<<"prev:"<<prev_1->data<<endl;
-                if(temp_1 == l1.head){
-                    temp_2->next = temp_1;
-                    l1.head = temp_2;
-                    prev_1 = l1.head;
-                    l2.head = next_2;
-                    temp_2 = next_2;
-                    next_2 = next_2->next;
-                }
-                else{
-                    prev_1->next = temp_2;
-                    temp_2->next = temp_1;
-                    prev_1 = temp_2;
-                    l2.head = next_2;
-                    temp_2 = next_2;
-                    next_2 = next_2->next;
-                }
-                l1.traverse_LL();
-            }
-            else{
-                prev_1 = temp_1;
-                temp_1 = temp_1->next;
-            }
-        }
-        cout<<"Previous : "<<prev_1->data;
-        cout<<"L2 ka head"<<l2.head->data;
-        cout<<"\nL1 ka head"<<l1.head->data;
-
-
-        if(temp_1 == NULL){
-            cout<<"hi";
-            prev_1->next = l2.head;
-            l1.traverse_LL();
-        }
-        cout<<"\nl1 ka head :"<<l1.head->data;
-        
-
-    }
 main(){
-    singly_linked_list l2;
-    l2.add_to_end_of_LL(-1);
-    l2.add_to_end_of_LL(0);
-    l2.add_to_end_of_LL(2);
-    l2.add_to_end_of_LL(25);
-    l2.add_to_end_of_LL(35);
-    l2.add_to_end_of_LL(40);
-    l2.traverse_LL();
-    singly_linked_list l1;
-    l1.add_to_end_of_LL(1);
-    l1.add_to_end_of_LL(20);
-    l1.add_to_end_of_LL(31);
-    l1.traverse_LL();
-    merge_2_LL(l1,l2);
-    //cout<<l1.head->data;
-    //cout<<l2.head->data;
-    cout<<"pgl\n";
-    l1.traverse_LL();
-
+    singly_linked_list s1;
+    s1.add_to_end_of_LL(1);
+    s1.add_to_end_of_LL(2);
+    s1.add_to_end_of_LL(3);
+    s1.add_to_end_of_LL(4);
+    s1.add_to_end_of_LL(5);
+    //RECURSION
+    Node* traverese = s1.head;
+    cout<<"Original order : ";
+    s1.print_in_order_by_RECURSION(traverese);
+    traverese = s1.head;
+    cout<<"\nReverse order : ";
+    s1.print_in_reverse_by_RECURSION(traverese);
     }
